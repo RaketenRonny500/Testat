@@ -169,6 +169,7 @@
   let minus = false;
 
   function resetgame() {
+    document.getElementById("Start").innerHTML = "Du bist Tot. Space zum neu starten.<br>Punktestand: " + score;
     life = 3;
     score = 0;
     let Ei1 = document.querySelector(".Ei1");
@@ -203,7 +204,6 @@
     Ei4.style.width = "";
     Ei4.style.borderRadius = "";
     Ei4.style.backgroundColor = "";
-    document.getElementById("Start").innerHTML = "Du bist Tot. Space zum neu starten.";
   }
 
 
