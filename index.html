@@ -1,0 +1,478 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+
+  <style>
+
+    body {
+      width: 100%;
+      height: 100%;
+      background-color: navajowhite;
+    }
+
+    .Spielfeld {
+      position: relative;
+      background-color: black;
+      height: 900px;
+      width: 1000px;
+    }
+
+    .Wolf {
+      position: absolute;
+      left: 350px;
+      top: 500px;
+      height: 100px;
+      width: 100px;
+      border-radius: 50%;
+      background-color: greenyellow;
+    }
+
+    .Rampe1 {
+      position: absolute;
+      transform: rotate(20deg);
+      top: 200px;
+      height: 10px;
+      width: 300px;
+      background-color: red;
+    }
+
+    .Rampe2 {
+      position: absolute;
+      transform: rotate(20deg);
+      top: 450px;
+      height: 10px;
+      width: 300px;
+      background-color: red;
+    }
+
+    .Rampe3 {
+      position: absolute;
+      transform: rotate(-20deg);
+      top: 200px;
+      right: 0px;
+      height: 10px;
+      width: 300px;
+      background-color: red;
+    }
+
+    .Rampe4 {
+      position: absolute;
+      transform: rotate(-20deg);
+      top: 450px;
+      right: 0px;
+      height: 10px;
+      width: 300px;
+      background-color: red;
+    }
+
+    .Ei1 {
+
+    }
+    .Ei2 {
+
+    }
+    .Ei3 {
+
+    }
+    .Ei4 {
+
+    }
+
+    .Punkte {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: large;
+      color: white;
+    }
+    .Leben {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: large;
+      color: white;
+    }
+
+  </style>
+
+</head>
+
+
+
+<body style="height: 100%; width: 100% ">
+
+  <!-- Add your site or application content here -->
+  <div class="Spielfeld">
+
+    <div class="Rampe1">
+      <div class="Ei1"></div>
+    </div>
+
+    <div class="Rampe2">
+      <div class="Ei2"></div>
+    </div>
+
+    <div class="Rampe3">
+      <div class="Ei3"></div>
+    </div>
+
+    <div class="Rampe4">
+      <div class="Ei4"></div>
+    </div>
+
+    <div class="Wolf"></div>
+
+    <div class="Punkte">PUNKTE:
+      <div id="Counter">0</div>
+    </div>
+
+    <div class="Leben">LEBEN:
+      <div id="LCounter">3</div>
+    </div>
+
+    <div id="Start" style="color: red; font-size: xxx-large; text-align: center">Space drücken zum Starten!</div>
+
+  </div>
+
+  <!-- WOLF -->
+
+<script>
+
+  let hold = true;
+  let Wolf = document.querySelector(".Wolf");
+  let bewegen = 100;
+
+  let q = false;
+  let y = false;
+  let plus = false;
+  let minus = false;
+
+  function resetgame() {
+    life = 3;
+    score = 0;
+    let Ei1 = document.querySelector(".Ei1");
+    let Ei2 = document.querySelector(".Ei2");
+    let Ei3 = document.querySelector(".Ei3");
+    let Ei4 = document.querySelector(".Ei4");
+    Ei1.style.position = "";
+    Ei1.style.left = "";
+    Ei1.style.top = "";
+    Ei1.style.height = "";
+    Ei1.style.width = "";
+    Ei1.style.borderRadius = "";
+    Ei1.style.backgroundColor = "";
+    Ei2.style.position = "";
+    Ei2.style.left = "";
+    Ei2.style.top = "";
+    Ei2.style.height = "";
+    Ei2.style.width = "";
+    Ei2.style.borderRadius = "";
+    Ei2.style.backgroundColor = "";
+    Ei3.style.position = "";
+    Ei3.style.left = "";
+    Ei3.style.top = "";
+    Ei3.style.height = "";
+    Ei3.style.width = "";
+    Ei3.style.borderRadius = "";
+    Ei3.style.backgroundColor = "";
+    Ei4.style.position = "";
+    Ei4.style.left = "";
+    Ei4.style.top = "";
+    Ei4.style.height = "";
+    Ei4.style.width = "";
+    Ei4.style.borderRadius = "";
+    Ei4.style.backgroundColor = "";
+    document.getElementById("Start").innerHTML = "Du bist Tot. Space zum neu starten.";
+  }
+
+
+  window.addEventListener("keypress", (s) => {
+    if (s.key == " ") {
+      document.getElementById("Start").innerHTML = "";
+      Wolf.style.position = "absolute";
+      Wolf.style.left = 450 + "px";
+      Wolf.style.top = 400 + "px";
+
+    }
+  });
+
+    window.addEventListener("keypress", (e) => {
+      switch (e.key) {
+        case "q":
+          if (hold) {
+            Wolf.style.left = parseInt(Wolf.style.left) - bewegen + "px";
+            Wolf.style.top = parseInt(Wolf.style.top) - bewegen + "px";
+            hold = false;
+            q = true;
+            console.log(q, hold)
+          }
+          break;
+        case "y":
+          if (hold) {
+            Wolf.style.left = parseInt(Wolf.style.left) - bewegen + "px";
+            Wolf.style.top = parseInt(Wolf.style.top) + bewegen + "px";
+            hold = false;
+            y = true;
+          }
+          break;
+        case "+":
+          if (hold) {
+            Wolf.style.top = parseInt(Wolf.style.top) - bewegen + "px";
+            Wolf.style.left = parseInt(Wolf.style.left) + bewegen + "px";
+            hold = false
+            plus = true;
+          }
+          break;
+        case '-':
+          if (hold) {
+            Wolf.style.top = parseInt(Wolf.style.top) + bewegen + "px";
+            Wolf.style.left = parseInt(Wolf.style.left) + bewegen + "px";
+            hold = false;
+            minus = true;
+          }
+          break;
+      }
+
+    })
+
+    window.addEventListener("keyup", (e) => {
+      switch (e.key) {
+        case "q":
+          Wolf.style.left = parseInt(Wolf.style.left) + bewegen + "px";
+          Wolf.style.top = parseInt(Wolf.style.top) + bewegen + "px";
+          hold = true;
+          q = false;
+          console.log(q, hold)
+          break;
+        case "y":
+          Wolf.style.left = parseInt(Wolf.style.left) + bewegen + "px";
+          Wolf.style.top = parseInt(Wolf.style.top) - bewegen + "px";
+          hold = true;
+          y = false;
+          break;
+        case "+":
+          Wolf.style.top = parseInt(Wolf.style.top) + bewegen + "px";
+          Wolf.style.left = parseInt(Wolf.style.left) - bewegen + "px";
+          hold = true;
+          plus = false;
+          break;
+        case '-':
+          Wolf.style.top = parseInt(Wolf.style.top) - bewegen + "px";
+          Wolf.style.left = parseInt(Wolf.style.left) - bewegen + "px";
+          hold = true;
+          minus = false;
+          break;
+
+      }
+    })
+
+
+</script>
+
+  <!-- EIER + PUNKTE -->
+
+<script>
+
+  let score = 0;
+  let life = 3;
+  let timer = 1000;
+  let count = 0;
+
+  function addScore() {
+    score = score + 1;
+    document.getElementById("Counter").innerHTML = score;
+  }
+
+  function loseLife() {
+    life = life - 1;
+    document.getElementById("LCounter").innerHTML = life;
+  }
+
+  function addEi() {
+
+    if (count < 1) {
+      count = count+1;
+      loopThroughEi();
+    }
+
+
+    if (score > 3 && count <= 1) {
+      count = count+1;
+      timer = 813
+      loopThroughEi();
+    }
+
+    if (score > 6 && count <= 2) {
+      count = count+1;
+      timer = 1216
+      loopThroughEi();
+    }
+
+  }
+
+  if (life < 1) {
+    gamerdy = false;
+  }
+
+  // Fisher-Yates-Shuffle
+  function randomEiray(randomizer) {
+    let currentIndex = randomizer.length, randomIndex;
+
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [randomizer[currentIndex], randomizer[randomIndex]] = [randomizer[randomIndex], randomizer[currentIndex]];
+    }
+    console.log(randomizer);
+    return randomizer;
+  }
+
+
+
+
+    window.addEventListener("keypress", (s) => {
+      if (s.key == " ") {
+
+
+        loopThroughEi();
+      }
+
+
+
+    });
+
+
+
+    function loopThroughEi() {
+
+      let Eix = [0, 100, 190, 280, 420];
+      let Eiy = [-20, -20, -20, -20, 300];
+
+      let Ei1 = document.querySelector(".Ei1");
+      let Ei2 = document.querySelector(".Ei2");
+      let Ei3 = document.querySelector(".Ei3");
+      let Ei4 = document.querySelector(".Ei4");
+
+      let randomizer = [Ei1, Ei2, Ei3, Ei4];
+
+      randomEiray(randomizer);
+      console.log(randomizer[1]);
+
+      let Ei = randomizer[1];
+
+      for (let i = 0; i < Eix.length; i++) {
+        if (life < 1) {
+          resetgame();
+          break;
+        }
+        // bewege an Position [i] px pro Iteration, Timeout nach jeder Iteration
+        (function (i) {
+          if (randomizer[1] === Ei1 || randomizer[1] === Ei2) {
+            setTimeout(function () {
+              if (i === 4) {
+
+                if (randomizer[1] === Ei1 && q === true || randomizer[1] === Ei2 && y === true) {
+                  Ei.style.position = "";
+                  Ei.style.left = "";
+                  Ei.style.top = "";
+                  Ei.style.height = "";
+                  Ei.style.width = "";
+                  Ei.style.borderRadius = "";
+                  Ei.style.backgroundColor = "";
+                  addScore();
+                } else {
+                  Ei.style.left = Eix[i] + "px";
+                  Ei.style.top = Eiy[i] + "px";
+                  Ei.style.height = 5 + "px";
+                  Ei.style.backgroundColor = "Orange";
+                  loseLife();
+                }
+                count = count-1
+                addEi();
+              //  loopThroughEi();
+              }
+              else {
+                Ei.style.left = Eix[i] + "px";
+                Ei.style.top = Eiy[i] + "px";
+                Ei.style.position = "absolute";
+                Ei.style.height = 20 + "px";
+                Ei.style.width = 30 + "px";
+                Ei.style.borderRadius = 50 + "%";
+                Ei.style.backgroundColor = "lightgoldenrodyellow";
+              }
+            }, timer * i);
+          } else {
+            setTimeout(function () {
+              if (i === 4) {
+
+                if (randomizer[1] === Ei3 && plus === true || randomizer[1] === Ei4 && minus === true) {
+                  Ei.style.position = "";
+                  Ei.style.right = "";
+                  Ei.style.top = "";
+                  Ei.style.height = "";
+                  Ei.style.width = "";
+                  Ei.style.borderRadius = "";
+                  Ei.style.backgroundColor = "";
+                  addScore();
+                } else {
+                  Ei.style.right = Eix[i] + "px";
+                  Ei.style.top = Eiy[i] + "px";
+                  Ei.style.height = 5 + "px";
+                  Ei.style.backgroundColor = "Orange";
+                  loseLife();
+                }
+                count = count-1
+                addEi();
+               // loopThroughEi()
+              }
+              else {
+                Ei.style.right = Eix[i] + "px";
+                Ei.style.top = Eiy[i] + "px";
+                Ei.style.position = "absolute";
+                Ei.style.height = 20 + "px";
+                Ei.style.width = 30 + "px";
+                Ei.style.borderRadius = 50 + "%";
+                Ei.style.backgroundColor = "lightgoldenrodyellow";
+              }
+            }, timer * i);
+          }
+        })(i);
+      }
+    }
+
+</script>
+
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  <script>
+    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async></script>
+</body>
+
+</html>
